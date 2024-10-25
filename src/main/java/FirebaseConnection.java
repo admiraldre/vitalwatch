@@ -4,8 +4,8 @@ import com.google.firebase.FirebaseOptions;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class FirebaseConnection {
 
@@ -15,25 +15,31 @@ public class FirebaseConnection {
 
     private FirebaseConnection() {
         try {
-            // Load the credentials once and store them
-            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("vitalwatch-app-firebase-adminsdk-v32z4-72358b04a3.json");
-            if (serviceAccount == null) {
-                throw new IOException("Firebase credentials file not found");
+            // Retrieve the path to the credentials file from the environment variable
+            String firebaseConfigPath = System.getenv("FIREBASE_CONFIG_PATH");  // Use the correct variable name here
+
+            // Check if the environment variable is set and has a valid path
+            if (firebaseConfigPath == null || firebaseConfigPath.isEmpty()) {
+                throw new IOException("FIREBASE_CONFIG_PATH environment variable is not set or is empty.");
             }
 
+            // Load the Firebase credentials from the file path
+            FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
+
+            // Initialize Firebase using the credentials
             googleCredentials = GoogleCredentials.fromStream(serviceAccount);
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(googleCredentials)
-                    .setDatabaseUrl("https://vitalwatch-app.firebaseio.com")
+                    .setDatabaseUrl("https://vitalwatch-app.firebaseio.com")  // Use your Firebase Realtime Database or Firestore URL
                     .build();
 
             FirebaseApp.initializeApp(options);
             System.out.println("Firebase successfully initialized.");
 
-            // Initialize Firestore using the stored credentials
+            // Initialize Firestore using the credentials
             db = FirestoreOptions.newBuilder()
-                    .setProjectId("vitalwatch-app")
+                    .setProjectId("vitalwatch-app")  // Replace with your Firebase project ID
                     .setCredentials(googleCredentials)
                     .build()
                     .getService();
@@ -43,6 +49,7 @@ public class FirebaseConnection {
         }
     }
 
+    // Singleton instance getter
     public static FirebaseConnection getInstance() {
         if (instance == null) {
             instance = new FirebaseConnection();
@@ -50,6 +57,7 @@ public class FirebaseConnection {
         return instance;
     }
 
+    // Getter for Firestore
     public Firestore getFirestore() {
         return db;
     }
