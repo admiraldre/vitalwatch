@@ -1,19 +1,47 @@
-<!-- res/layout/activity_home.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_message"
+        android:text="Welcome to VitalWatch Home!"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:gravity="center" />
+        android:gravity="center"
+        android:paddingBottom="24dp" />
 
-    <!-- Add more smartwatch-like UI components here -->
+    <TextView
+        android:id="@+id/stepsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps: --"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/heartRateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heart Rate: -- bpm"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/bloodOxygenTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blood Oxygen: -- %"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp" />
+
 </LinearLayout>

@@ -11,6 +11,8 @@
     <string name="enter_height_cm">Enter Height (cm)</string>
     <string name="welcome_message">Welcome to VitalWatch Home!</string>
     <string name="save">Save</string>
+    <string name="heart_rate">Heart Rate:</string>
+    <string name="steps">Steps:</string>
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>
