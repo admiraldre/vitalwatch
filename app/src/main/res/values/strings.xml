@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">VitalWatch</string>
+    <string name="welcome_text">Welcome to VitalWatch</string>
+    <string name="email_hint">Enter your email</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="login_button_text">Login</string>
+    <string name="sign_up_button_text">Sign Up</string>
+    <string name="fitness_information">Fitness Information</string>
+    <string name="enter_age">Enter Age</string>
+    <string name="enter_weight_kg">Enter Weight (kg)</string>
+    <string name="enter_height_cm">Enter Height (cm)</string>
+    <string name="save">Save</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+</resources>
