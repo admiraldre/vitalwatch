@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- AndroidManifest.xml -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.vw">
@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
-
 
     <application
         android:name=".MyApplication"
@@ -29,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Add FitnessInfoActivity declaration here -->
+        <!-- Other activity declarations -->
         <activity android:name=".FitnessInfoActivity" />
         <activity android:name=".HomeActivity" />
 
