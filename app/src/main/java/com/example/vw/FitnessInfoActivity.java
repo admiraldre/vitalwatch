@@ -1,6 +1,7 @@
 // FitnessInfoActivity.java
 package com.example.vw;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -86,7 +87,10 @@ public class FitnessInfoActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(FitnessInfoActivity.this, "Fitness info saved successfully!", Toast.LENGTH_SHORT).show();
-                    finish();  // Close the activity
+                    // Navigate to HomeActivity
+                    Intent intent = new Intent(FitnessInfoActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();  // Close FitnessInfoActivity
                 } else {
                     Toast.makeText(FitnessInfoActivity.this, "Error saving fitness info", Toast.LENGTH_SHORT).show();
                 }

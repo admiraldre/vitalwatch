@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = auth.getCurrentUser();
                             Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                             // Navigate to the next activity (e.g., FitnessInfoActivity)
-                            Intent intent = new Intent(LoginActivity.this, FitnessInfoActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.putExtra("USER_ID", user.getUid());
                             startActivity(intent);
                             finish();
