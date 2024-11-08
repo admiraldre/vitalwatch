@@ -1,3 +1,4 @@
+import Utils.HealthMetricsSimulator;
 public class HeartRateController {
     private HeartRateModel model;
     private HeartRateView view;
