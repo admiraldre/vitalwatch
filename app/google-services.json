@@ -12,7 +12,16 @@
           "package_name": "com.example.vw"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "37021169792-em2a7f67v940906cdccp055psbderkif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vw",
+            "certificate_hash": "83997409A1BB1256E705B2128C26A4B6B0AE640F"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCHTewjAHYk1ej7K3GsTTQZ444lRp-7-YA"
