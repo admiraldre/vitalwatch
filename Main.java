@@ -1,3 +1,6 @@
+import Model.HeartRateModel;
+import View.HeartRateView;
+import Controller.HeartRateController;
 public class Main {
     public static void main(String[] args) {
         HeartRateModel model = new HeartRateModel();
