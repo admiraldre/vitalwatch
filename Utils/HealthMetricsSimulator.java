@@ -1,4 +1,6 @@
 package Utils;
+
+import java.util.Random;
 public class HealthMetricsSimulator {
     private static final Random random = new Random();
 
