@@ -1,3 +1,4 @@
+package Controller;
 import Utils.HealthMetricsSimulator;
 public class HeartRateController {
     private HeartRateModel model;
