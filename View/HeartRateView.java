@@ -1,5 +1,6 @@
 package View;
 import java.util.*;
+import Model.HeartRateModel;
 
 public class HeartRateView implements Observer {
     public void update(Observable o, Object arg) {
