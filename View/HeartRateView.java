@@ -1,3 +1,4 @@
+package View;
 import java.util.*;
 
 public class HeartRateView implements Observer {
