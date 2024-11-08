@@ -1,5 +1,6 @@
 package Utils;
 
+import Model.HeartRateModel;
 import java.util.Random;
 public class HealthMetricsSimulator {
     private static final Random random = new Random();
