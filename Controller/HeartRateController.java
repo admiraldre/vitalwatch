@@ -1,5 +1,7 @@
 package Controller;
 import Utils.HealthMetricsSimulator;
+import Model.HeartRateModel;
+import View.HeartRateView;
 public class HeartRateController {
     private HeartRateModel model;
     private HeartRateView view;
