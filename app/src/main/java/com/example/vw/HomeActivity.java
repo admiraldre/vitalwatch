@@ -169,6 +169,7 @@ public class HomeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 accessGoogleFitData(); // Permissions granted, access data
             } else {
+                Log.e("GoogleFit", "User denied Google Fit permissions");
                 Toast.makeText(this, "Permission denied to access Google Fit data", Toast.LENGTH_SHORT).show();
             }
         }
