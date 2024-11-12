@@ -77,17 +77,12 @@ public class HomeActivity extends AppCompatActivity {
                 .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
                 .build();
 
-        // Check for permissions and request if not already granted
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getAccountForExtension(this, fitnessOptions), fitnessOptions)) {
-            GoogleSignIn.requestPermissions(
-                    this,
-                    GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-                    GoogleSignIn.getAccountForExtension(this, fitnessOptions),
-                    fitnessOptions);
-        } else {
-            // Permissions already granted, proceed to access Google Fit data
-            accessGoogleFitData();
-        }
+        // Always request Google Fit permissions, regardless of whether they are granted or not
+        GoogleSignIn.requestPermissions(
+                this,
+                GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
+                GoogleSignIn.getAccountForExtension(this, fitnessOptions),
+                fitnessOptions);
     }
 
     // Function to access Google Fit data
