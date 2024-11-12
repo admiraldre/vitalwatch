@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         Button loginButton = findViewById(R.id.loginButton);
         Button signUpButton = findViewById(R.id.signUpButton);
+        Button adminButton = findViewById(R.id.adminButton);
 
         // Set up the Login button click listener
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +55,18 @@ public class LoginActivity extends AppCompatActivity {
                 signUp(email, password);
             }
         });
+
+        // Admin Login logic for button click event
+        /*
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to the AdminLoginActivity
+                Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
+                startActivity(intent);
+        });
+
+         */
     }
 
     private void login(String email, String password) {
@@ -99,4 +112,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /*
+    private void adminLogin(String email, String password){
+        // This should check the email and password and compare it to the admin login info stored in Firebase
+
+    }
+    */
+
 }

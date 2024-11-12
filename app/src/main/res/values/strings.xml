@@ -19,4 +19,5 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+    <string name="admin_button_login">Admin Login</string>
 </resources>
