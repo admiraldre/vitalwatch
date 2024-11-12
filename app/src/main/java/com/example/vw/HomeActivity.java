@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -169,10 +170,29 @@ public class HomeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 accessGoogleFitData(); // Permissions granted, access data
             } else {
-                Log.e("GoogleFit", "User denied Google Fit permissions");
-                Toast.makeText(this, "Permission denied to access Google Fit data", Toast.LENGTH_SHORT).show();
+                // Show a dialog explaining the need for permissions
+                new AlertDialog.Builder(this)
+                        .setTitle("Google Fit Permissions Required")
+                        .setMessage("To use all features, please grant Google Fit permissions. This allows us to access your steps and heart rate data.")
+                        .setPositiveButton("Try Again", (dialog, which) -> requestGoogleFitPermissions())
+                        .setNegativeButton("Cancel", (dialog, which) ->
+                                Toast.makeText(this, "Google Fit permissions required for full functionality", Toast.LENGTH_SHORT).show())
+                        .show();
             }
         }
+    }
+
+    private void requestGoogleFitPermissions() {
+        FitnessOptions fitnessOptions = FitnessOptions.builder()
+                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
+                .build();
+
+        GoogleSignIn.requestPermissions(
+                this,
+                GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
+                GoogleSignIn.getAccountForExtension(this, fitnessOptions),
+                fitnessOptions);
     }
 
     @Override
