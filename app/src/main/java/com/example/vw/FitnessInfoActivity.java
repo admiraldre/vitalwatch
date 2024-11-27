@@ -83,7 +83,7 @@ public class FitnessInfoActivity extends AppCompatActivity {
         fitnessData.put("gender", gender);
 
         // Store the data in the user's document in Firestore
-        DocumentReference userDocRef = db.collection("users").document(userId);
+        DocumentReference userDocRef = db.collection("patients").document(userId);
         userDocRef.set(fitnessData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
