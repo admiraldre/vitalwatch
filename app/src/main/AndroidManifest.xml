@@ -36,6 +36,12 @@
         <activity android:name=".FitnessInfoActivity" />
         <activity android:name=".HomeActivity" />
 
+        <!-- Admin Login Activity -->
+        <activity android:name=".AdminLoginActivity" />
+
+        <!-- Admin Dashboard Activity -->
+        <activity android:name=".AdminDashboardActivity" />
+
     </application>
 
 </manifest>
