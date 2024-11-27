@@ -15,6 +15,14 @@
         android:gravity="center_horizontal"
         android:paddingBottom="16dp" />
 
+    <!-- Name Field Input -->
+    <EditText
+        android:id="@+id/nameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_name"
+        android:inputType="textPersonName" />
+
     <!-- Age Field Input -->
     <EditText
         android:id="@+id/ageField"

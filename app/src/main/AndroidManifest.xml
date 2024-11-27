@@ -35,6 +35,7 @@
         <!-- Other activity declarations -->
         <activity android:name=".FitnessInfoActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".SignUpActivity"/>
 
         <!-- Admin Login Activity -->
         <activity android:name=".AdminLoginActivity" />

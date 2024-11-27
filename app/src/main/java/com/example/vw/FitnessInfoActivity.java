@@ -1,4 +1,3 @@
-// FitnessInfoActivity.java
 package com.example.vw;
 
 import android.content.Intent;
@@ -22,7 +21,7 @@ import java.util.Map;
 
 public class FitnessInfoActivity extends AppCompatActivity {
 
-    private EditText ageField, weightField, heightField;
+    private EditText nameField, ageField, weightField, heightField;
     private Spinner genderSpinner;
     private FirebaseFirestore db;
     private String userId; // The UID of the signed-up user
@@ -39,6 +38,7 @@ public class FitnessInfoActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("USER_ID");
 
         // Initialize UI components
+        nameField = findViewById(R.id.nameField);
         ageField = findViewById(R.id.ageField);
         weightField = findViewById(R.id.weightField);
         heightField = findViewById(R.id.heightField);
@@ -62,19 +62,21 @@ public class FitnessInfoActivity extends AppCompatActivity {
 
     // Save the user's fitness information to Firestore
     private void saveFitnessInfo() {
+        String name = nameField.getText().toString().trim();
         String age = ageField.getText().toString().trim();
         String weight = weightField.getText().toString().trim();
         String height = heightField.getText().toString().trim();
         String gender = genderSpinner.getSelectedItem().toString();
 
         // Validate input
-        if (age.isEmpty() || weight.isEmpty() || height.isEmpty()) {
+        if (name.isEmpty() || age.isEmpty() || weight.isEmpty() || height.isEmpty()) {
             Toast.makeText(this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Prepare data to save in Firestore
         Map<String, Object> fitnessData = new HashMap<>();
+        fitnessData.put("name", name);
         fitnessData.put("age", age);
         fitnessData.put("weight", weight);
         fitnessData.put("height", height);

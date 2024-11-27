@@ -20,4 +20,5 @@
         <item>Other</item>
     </string-array>
     <string name="admin_button_login">Admin Login</string>
+    <string name="enter_name">Enter Name</string>"
 </resources>
