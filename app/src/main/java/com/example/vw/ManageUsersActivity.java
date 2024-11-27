@@ -37,8 +37,8 @@ public class ManageUsersActivity extends AppCompatActivity {
 
         // Set up the observer to navigate to HomeActivity on item click
         adapter.setOnItemClickListener(patient -> {
-            Intent intent = new Intent(ManageUsersActivity.this, HomeActivity.class);
-            intent.putExtra("PATIENT_ID", patient.getId());
+            Intent intent = new Intent(ManageUsersActivity.this, PatientDetailsActivity.class);
+            intent.putExtra("PATIENT_ID", patient.getId()); // Pass patient ID to fetch data
             startActivity(intent);
         });
 
