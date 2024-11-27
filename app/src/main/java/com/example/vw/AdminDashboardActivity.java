@@ -1,5 +1,6 @@
 package com.example.vw;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,8 +25,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
         manageUsersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // For now, we will show a Toast, but you can redirect to other activities
-                Toast.makeText(AdminDashboardActivity.this, "Manage Users clicked!", Toast.LENGTH_SHORT).show();
+                // Navigate to ManageUsersActivity
+                Intent intent = new Intent(AdminDashboardActivity.this, ManageUsersActivity.class);
+                startActivity(intent);
             }
         });
 

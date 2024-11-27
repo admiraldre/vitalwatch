@@ -44,6 +44,7 @@
 
         <!-- Admin Dashboard Activity -->
         <activity android:name=".AdminDashboardActivity" />
+        <activity android:name=".ManageUsersActivity" />
 
     </application>
 

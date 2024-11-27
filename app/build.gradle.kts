@@ -44,6 +44,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.android.gms:play-services-fitness:21.0.1")
     implementation("com.google.android.gms:play-services-auth:20.6.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+    implementation ("androidx.recyclerview:recyclerview-selection:1.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
