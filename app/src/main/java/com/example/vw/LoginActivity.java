@@ -57,16 +57,15 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Admin Login logic for button click event
-        /*
+
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Navigate to the AdminLoginActivity
                 Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
                 startActivity(intent);
+            }
         });
-
-         */
     }
 
     private void login(String email, String password) {
