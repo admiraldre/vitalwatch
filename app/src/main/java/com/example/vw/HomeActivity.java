@@ -3,24 +3,29 @@ package com.example.vw;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.vw.decorators.AlarmsFeature;
+import com.example.vw.decorators.BaseFeature;
+import com.example.vw.decorators.Feature;
+import com.example.vw.decorators.RemindersFeature;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.data.DataPoint;
-
-import android.graphics.Color;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -31,6 +36,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -40,9 +46,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView stepsTextView;
     private TextView heartRateTextView;
+    private LinearLayout additionalFeaturesContainer;
 
     private PieChart stepsPieChart;
     private LineChart heartRateLineChart;
+
+    private Feature homeFeature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,34 +59,45 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // Initialize UI components
-        TextView welcomeText = findViewById(R.id.welcomeText);
-        welcomeText.setText("Welcome to VitalWatch Home!");
+        initializeUI();
 
-        stepsTextView = findViewById(R.id.stepsTextView);
-        heartRateTextView = findViewById(R.id.heartRateTextView);
-
-        stepsPieChart = findViewById(R.id.stepsPieChart);
-        heartRateLineChart = findViewById(R.id.heartRateLineChart);
-
-        // Check and request ACTIVITY_RECOGNITION permission
+        // Check and request permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
-                    PERMISSION_REQUEST_ACTIVITY_RECOGNITION);
+            requestActivityRecognitionPermission();
         } else {
             initializeGoogleFit();
         }
+
+        // Load user settings and display features dynamically
+        loadUserSettings();
+    }
+
+    private void initializeUI() {
+        stepsTextView = findViewById(R.id.stepsTextView);
+        heartRateTextView = findViewById(R.id.heartRateTextView);
+        stepsPieChart = findViewById(R.id.stepsPieChart);
+        heartRateLineChart = findViewById(R.id.heartRateLineChart);
+        additionalFeaturesContainer = findViewById(R.id.additionalFeaturesContainer);
+
+        findViewById(R.id.settingsButton).setOnClickListener(view -> {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void requestActivityRecognitionPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
+                PERMISSION_REQUEST_ACTIVITY_RECOGNITION);
     }
 
     private void initializeGoogleFit() {
-        // Configure Google Fit options with necessary permissions
         FitnessOptions fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
                 .build();
 
-        // Always request Google Fit permissions, regardless of whether they are granted or not
         GoogleSignIn.requestPermissions(
                 this,
                 GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
@@ -85,23 +105,19 @@ public class HomeActivity extends AppCompatActivity {
                 fitnessOptions);
     }
 
-    // Function to access Google Fit data
     private void accessGoogleFitData() {
-        // Retrieve daily step count
         Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(dataSet -> {
                     int totalSteps = dataSet.isEmpty() ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
                     stepsTextView.setText("Steps: " + totalSteps);
-                    int stepsGoal = 6000;
-                    updateStepsPieChart(totalSteps, stepsGoal);
+                    updateStepsPieChart(totalSteps, 6000);
                 })
                 .addOnFailureListener(e -> {
                     Log.e("GoogleFit", "Failed to retrieve steps", e);
                     Toast.makeText(this, "Failed to retrieve steps", Toast.LENGTH_SHORT).show();
                 });
 
-        // Retrieve current heart rate (latest reading) and heart rate trend over the day
         Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .readData(new com.google.android.gms.fitness.request.DataReadRequest.Builder()
                         .read(DataType.TYPE_HEART_RATE_BPM)
@@ -115,22 +131,15 @@ public class HomeActivity extends AppCompatActivity {
                     for (DataPoint dp : dataReadResponse.getDataSet(DataType.TYPE_HEART_RATE_BPM).getDataPoints()) {
                         float heartRate = dp.getValue(Field.FIELD_BPM).asFloat();
                         heartRateEntries.add(new Entry(index++, heartRate));
-                        latestHeartRate = heartRate; // Keep updating to get the latest
+                        latestHeartRate = heartRate;
                     }
 
-                    // Update the UI with the latest heart rate reading
-                    if (latestHeartRate != -1) {
-                        heartRateTextView.setText("Heart Rate: " + latestHeartRate + " bpm");
-                    } else {
-                        heartRateTextView.setText("Heart Rate: N/A");
-                    }
-
-                    // Update the heart rate trend line chart
+                    heartRateTextView.setText(latestHeartRate != -1 ? "Heart Rate: " + latestHeartRate + " bpm" : "Heart Rate: N/A");
                     updateHeartRateLineChart(heartRateEntries);
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("GoogleFit", "Failed to retrieve heart rate data", e);
-                    Toast.makeText(this, "Failed to retrieve heart rate data", Toast.LENGTH_SHORT).show();
+                    Log.e("GoogleFit", "Failed to retrieve heart rate", e);
+                    Toast.makeText(this, "Failed to retrieve heart rate", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -144,55 +153,71 @@ public class HomeActivity extends AppCompatActivity {
 
         PieData data = new PieData(dataSet);
         stepsPieChart.setData(data);
-        stepsPieChart.invalidate(); // Refresh the chart
+        stepsPieChart.invalidate();
     }
 
     private void updateHeartRateLineChart(List<Entry> heartRateEntries) {
-        LineDataSet dataSet = new LineDataSet(heartRateEntries, "Heart Rate Throughout the Day");
+        LineDataSet dataSet = new LineDataSet(heartRateEntries, "Heart Rate");
         dataSet.setColor(Color.RED);
         dataSet.setValueTextColor(Color.BLACK);
 
-        LineData lineData = new LineData(dataSet);
-        heartRateLineChart.setData(lineData);
-        heartRateLineChart.invalidate(); // Refresh the chart
+        LineData data = new LineData(dataSet);
+        heartRateLineChart.setData(data);
+        heartRateLineChart.invalidate();
     }
 
-    // Handle the result of the Google Fit permission request
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GOOGLE_FIT_PERMISSIONS_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                accessGoogleFitData(); // Permissions granted, access data
-            } else {
-                // Show a dialog explaining the need for permissions
-                new AlertDialog.Builder(this)
-                        .setTitle("Google Fit Permissions Required")
-                        .setMessage("To use all features, please grant Google Fit permissions. This allows us to access your steps and heart rate data.")
-                        .setPositiveButton("Try Again", (dialog, which) -> requestGoogleFitPermissions())
-                        .setNegativeButton("Cancel", (dialog, which) ->
-                                Toast.makeText(this, "Google Fit permissions required for full functionality", Toast.LENGTH_SHORT).show())
-                        .show();
+    private void loadUserSettings() {
+        // Base feature
+        homeFeature = new BaseFeature(this);
+
+        // Add alarms if enabled
+        Intent intent = getIntent();
+        Calendar alarmTime = (Calendar) intent.getSerializableExtra("alarmTime");
+        if (alarmTime != null) {
+            homeFeature = new AlarmsFeature(homeFeature, alarmTime, this);
+
+            // Add alarm to the UI
+            TextView alarmView = new TextView(this);
+            alarmView.setText("Alarm set for: " + alarmTime.getTime());
+            additionalFeaturesContainer.addView(alarmView);
+        }
+
+        // Add reminders if enabled
+        ArrayList<String> reminders = intent.getStringArrayListExtra("reminders");
+        if (reminders != null && !reminders.isEmpty()) {
+            RemindersFeature reminderFeature = new RemindersFeature(homeFeature, this);
+            for (String reminder : reminders) {
+                reminderFeature.addReminder(reminder);
             }
+            homeFeature = reminderFeature;
+            homeFeature.displayFeature();
         }
     }
 
-    private void requestGoogleFitPermissions() {
-        FitnessOptions fitnessOptions = FitnessOptions.builder()
-                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-                .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
-                .build();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GOOGLE_FIT_PERMISSIONS_REQUEST_CODE && resultCode == RESULT_OK) {
+            accessGoogleFitData();
+        } else if (requestCode == GOOGLE_FIT_PERMISSIONS_REQUEST_CODE) {
+            showPermissionDeniedDialog();
+        }
+    }
 
-        GoogleSignIn.requestPermissions(
-                this,
-                GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-                GoogleSignIn.getAccountForExtension(this, fitnessOptions),
-                fitnessOptions);
+    private void showPermissionDeniedDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Permissions Required")
+                .setMessage("Google Fit permissions are required for the app to function fully.")
+                .setPositiveButton("Retry", (dialog, which) -> initializeGoogleFit())
+                .setNegativeButton("Cancel", (dialog, which) ->
+                        Toast.makeText(this, "Permissions are required for full functionality.", Toast.LENGTH_SHORT).show())
+                .show();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == PERMISSION_REQUEST_ACTIVITY_RECOGNITION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initializeGoogleFit();
