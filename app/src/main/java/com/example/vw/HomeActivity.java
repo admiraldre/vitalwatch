@@ -175,11 +175,6 @@ public class HomeActivity extends AppCompatActivity {
         Calendar alarmTime = (Calendar) intent.getSerializableExtra("alarmTime");
         if (alarmTime != null) {
             homeFeature = new AlarmsFeature(homeFeature, alarmTime, this);
-
-            // Add alarm to the UI
-            TextView alarmView = new TextView(this);
-            alarmView.setText("Alarm set for: " + alarmTime.getTime());
-            additionalFeaturesContainer.addView(alarmView);
         }
 
         // Add reminders if enabled
@@ -190,9 +185,12 @@ public class HomeActivity extends AppCompatActivity {
                 reminderFeature.addReminder(reminder);
             }
             homeFeature = reminderFeature;
-            homeFeature.displayFeature();
         }
+
+        // Display the features
+        homeFeature.displayFeature();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
