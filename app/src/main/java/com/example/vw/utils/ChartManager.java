@@ -1,6 +1,7 @@
 package com.example.vw.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -45,6 +46,7 @@ public class ChartManager {
         PieDataSet dataSet = new PieDataSet(entries, "Steps Goal");
         dataSet.setColors(new int[]{android.R.color.holo_green_light, android.R.color.holo_red_light}, context);
 
+        dataSet.setValueTextColor(Color.BLACK);
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.invalidate(); // Refresh the chart
