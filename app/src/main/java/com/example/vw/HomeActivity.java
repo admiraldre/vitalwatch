@@ -21,6 +21,9 @@ import com.example.vw.decorators.BaseFeature;
 import com.example.vw.decorators.Feature;
 import com.example.vw.decorators.RemindersFeature;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataPoint;
@@ -53,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private Feature homeFeature;
 
+    private GoogleSignInClient googleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,16 +66,25 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize UI components
         initializeUI();
 
-        // Check and request permissions
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestActivityRecognitionPermission();
+        // Configure Google Sign-In options
+        configureGoogleSignIn();
+
+        // Check if user is already signed in
+        if (isGoogleAccountSignedIn()) {
+            accessGoogleFitData(); // Use the existing account
         } else {
-            initializeGoogleFit();
+            signIn(); // Prompt for sign-in
         }
 
         // Load user settings and display features dynamically
         loadUserSettings();
+    }
+
+    private void configureGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     private void initializeUI() {
@@ -84,29 +98,54 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.signOutButton).setOnClickListener(view -> signOut());
     }
 
-    private void requestActivityRecognitionPermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
-                PERMISSION_REQUEST_ACTIVITY_RECOGNITION);
+    private boolean isGoogleAccountSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
 
-    private void initializeGoogleFit() {
+    private void signIn() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_FIT_PERMISSIONS_REQUEST_CODE);
+    }
+
+    private void signOut() {
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // Optionally close the app or redirect to login screen
+        });
+    }
+
+    private void requestGoogleFitPermissions() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FitnessOptions fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
                 .build();
 
-        GoogleSignIn.requestPermissions(
-                this,
-                GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-                GoogleSignIn.getAccountForExtension(this, fitnessOptions),
-                fitnessOptions);
+        if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
+            GoogleSignIn.requestPermissions(
+                    this,
+                    GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
+                    account,
+                    fitnessOptions);
+        } else {
+            accessGoogleFitData(); // Already signed in, access data
+        }
     }
 
     private void accessGoogleFitData() {
-        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account == null) {
+            signIn(); // Prompt the user to sign in again
+            return;
+        }
+
+        Fitness.getHistoryClient(this, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(dataSet -> {
                     int totalSteps = dataSet.isEmpty() ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
@@ -118,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to retrieve steps", Toast.LENGTH_SHORT).show();
                 });
 
-        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
+        Fitness.getHistoryClient(this, account)
                 .readData(new com.google.android.gms.fitness.request.DataReadRequest.Builder()
                         .read(DataType.TYPE_HEART_RATE_BPM)
                         .setTimeRange(1, System.currentTimeMillis(), java.util.concurrent.TimeUnit.MILLISECONDS)
@@ -191,7 +230,6 @@ public class HomeActivity extends AppCompatActivity {
         homeFeature.displayFeature();
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -206,7 +244,7 @@ public class HomeActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Permissions Required")
                 .setMessage("Google Fit permissions are required for the app to function fully.")
-                .setPositiveButton("Retry", (dialog, which) -> initializeGoogleFit())
+                .setPositiveButton("Retry", (dialog, which) -> signIn())
                 .setNegativeButton("Cancel", (dialog, which) ->
                         Toast.makeText(this, "Permissions are required for full functionality.", Toast.LENGTH_SHORT).show())
                 .show();
@@ -218,7 +256,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == PERMISSION_REQUEST_ACTIVITY_RECOGNITION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initializeGoogleFit();
+                requestGoogleFitPermissions();
             } else {
                 Toast.makeText(this, "Permission denied for Activity Recognition", Toast.LENGTH_SHORT).show();
             }
