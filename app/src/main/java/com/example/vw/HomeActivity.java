@@ -84,6 +84,11 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.logOutButton).setOnClickListener(view -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void requestActivityRecognitionPermission() {
