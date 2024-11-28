@@ -10,20 +10,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name: "
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/ageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Age: "
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:padding="8dp"/>
 
     <TextView
-        android:id="@+id/fitnessGoalTextView"
+        android:id="@+id/weightTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fitness Goal: "
-        android:textSize="18sp" />
+        android:text="Weight: "
+        android:textSize="18sp"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/heightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Height: "
+        android:textSize="18sp"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/genderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender: "
+        android:textSize="18sp"
+        android:padding="8dp"/>
 
 </LinearLayout>

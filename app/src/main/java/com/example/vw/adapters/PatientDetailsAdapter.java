@@ -23,7 +23,6 @@ public class PatientDetailsAdapter extends RecyclerView.Adapter<PatientDetailsAd
     // Variables to hold patient details
     private String patientName;
     private String patientAge;
-    private String patientFitnessGoal;
 
     /**
      * Constructor to initialize the adapter with an item click listener.
@@ -33,7 +32,6 @@ public class PatientDetailsAdapter extends RecyclerView.Adapter<PatientDetailsAd
     public PatientDetailsAdapter(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
-
 
     /**
      * Updates the list of options and refreshes the RecyclerView.
@@ -48,16 +46,13 @@ public class PatientDetailsAdapter extends RecyclerView.Adapter<PatientDetailsAd
     /**
      * Sets the patient details to be displayed.
      *
-     * @param name         The name of the patient.
-     * @param age          The age of the patient.
-     * @param fitnessGoal  The fitness goal of the patient.
+     * @param name The name of the patient.
+     * @param age  The age of the patient.
      */
-    public void setPatientDetails(String name, String age, String fitnessGoal) {
+    public void setPatientDetails(String name, String age) {
         this.patientName = name;
         this.patientAge = age;
-        this.patientFitnessGoal = fitnessGoal;
     }
-
 
     /**
      * Retrieves the patient's name.
@@ -75,15 +70,6 @@ public class PatientDetailsAdapter extends RecyclerView.Adapter<PatientDetailsAd
      */
     public String getPatientAge() {
         return patientAge;
-    }
-
-    /**
-     * Retrieves the patient's fitness goal.
-     *
-     * @return The patient's fitness goal.
-     */
-    public String getPatientFitnessGoal() {
-        return patientFitnessGoal;
     }
 
     @NonNull

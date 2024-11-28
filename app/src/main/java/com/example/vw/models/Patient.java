@@ -7,8 +7,7 @@ public class Patient {
     private String id;
     private String name;
     private String email;
-    private String age;
-    private String fitnessGoal;
+    private String age;  // Keep age field, remove fitnessGoal field
 
     /**
      * Default constructor required for Firestore and other serialization frameworks.
@@ -18,18 +17,16 @@ public class Patient {
     /**
      * Constructs a Patient object with the given details.
      *
-     * @param id           The unique identifier of the patient.
-     * @param name         The name of the patient.
-     * @param email        The email address of the patient.
-     * @param age          The age of the patient.
-     * @param fitnessGoal  The fitness goal of the patient.
+     * @param id          The unique identifier of the patient.
+     * @param name        The name of the patient.
+     * @param email       The email address of the patient.
+     * @param age         The age of the patient.
      */
-    public Patient(String id, String name, String email, String age, String fitnessGoal) {
+    public Patient(String id, String name, String email, String age) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
-        this.fitnessGoal = fitnessGoal;
     }
 
     /**
@@ -102,23 +99,5 @@ public class Patient {
      */
     public void setAge(String age) {
         this.age = age;
-    }
-
-    /**
-     * Gets the fitness goal of the patient.
-     *
-     * @return The patient's fitness goal.
-     */
-    public String getFitnessGoal() {
-        return fitnessGoal;
-    }
-
-    /**
-     * Sets the fitness goal of the patient.
-     *
-     * @param fitnessGoal The patient's fitness goal.
-     */
-    public void setFitnessGoal(String fitnessGoal) {
-        this.fitnessGoal = fitnessGoal;
     }
 }

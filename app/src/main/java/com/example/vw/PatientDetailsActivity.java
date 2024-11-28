@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vw.adapters.PatientDetailsAdapter;
 import com.example.vw.models.Patient;
-import com.google.firebase.firestore.DocumentReference;
+import com.example.vw.models.ActivityLog;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +30,6 @@ public class PatientDetailsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String patientId;
 
-    /**
-     * Called when the activity is starting. Sets up the RecyclerView and Firestore
-     * listener to fetch and display patient details. It also handles item click events
-     * for navigation to other activities.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after previously being
-     *                           shut down, this Bundle contains the data it most recently supplied.
-     *                           Otherwise, it is null.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +48,10 @@ public class PatientDetailsActivity extends AppCompatActivity {
                     intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
                     intent.putExtra("PATIENT_NAME", adapter.getPatientName()); // Pass patient name
                     intent.putExtra("PATIENT_AGE", adapter.getPatientAge()); // Pass patient age
-                    intent.putExtra("PATIENT_FITNESS_GOAL", adapter.getPatientFitnessGoal()); // Pass fitness goal
                     startActivity(intent);
-                } else if (option.equals("View Home Activity")) {
-                    // Navigate to HomeActivity with patient ID
-                    Intent intent = new Intent(PatientDetailsActivity.this, HomeActivity.class);
+                } else if (option.equals("View Activity Summary")) {
+                    // Navigate to ActivitySummaryActivity with patient ID
+                    Intent intent = new Intent(PatientDetailsActivity.this, ActivitySummaryActivity.class);
                     intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
                     startActivity(intent);
                 }
@@ -92,12 +84,15 @@ public class PatientDetailsActivity extends AppCompatActivity {
 
                     // Add available options for the admin to select
                     options.add("Patient Health Info");
-                    options.add("View Home Activity");
+                    options.add("View Activity Summary");
 
                     // Set patient details for use in the adapter
                     if (patient != null) {
-                        adapter.setPatientDetails(patient.getName(), patient.getAge(), patient.getFitnessGoal());
+                        adapter.setPatientDetails(patient.getName(), patient.getAge());
                     }
+
+                    // Fetch and add activity log history for the patient
+                    fetchActivityLogs(patient);
 
                     // Update the RecyclerView with the available options
                     adapter.updateOptions(options);
@@ -107,5 +102,38 @@ public class PatientDetailsActivity extends AppCompatActivity {
                 Toast.makeText(PatientDetailsActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Fetches activity logs for the patient from Firestore.
+     *
+     * @param patient The patient whose activity logs are to be fetched.
+     */
+    private void fetchActivityLogs(Patient patient) {
+        db.collection("patients")
+                .document(patientId)
+                .collection("activityLogs")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<ActivityLog> activityLogs = new ArrayList<>();
+
+                        // Parse the Firestore documents into ActivityLog objects
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            ActivityLog log = document.toObject(ActivityLog.class);
+                            activityLogs.add(log);
+                        }
+
+                        // Handle if there are no activity logs
+                        if (activityLogs.isEmpty()) {
+                            Toast.makeText(PatientDetailsActivity.this, "No activity logs found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // You can decide how to present these logs; e.g., showing them in a separate activity
+                            // Add logic to pass this data to another activity or update the UI accordingly.
+                        }
+                    } else {
+                        Toast.makeText(PatientDetailsActivity.this, "Failed to fetch activity logs", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vw.adapters.PatientsAdapter;
 import com.example.vw.models.Patient;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,23 +70,26 @@ public class ManageUsersActivity extends AppCompatActivity {
     private void observePatientsCollection() {
         CollectionReference patientsRef = db.collection("patients");
 
-        patientsRef.addSnapshotListener((value, error) -> {
-            if (error != null) {
-                // Show a Toast message if there is an error loading patient data
-                Toast.makeText(this, "Error loading patients: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                return;
-            }
+        patientsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot value, FirebaseFirestoreException error) {
+                if (error != null) {
+                    // Show a Toast message if there is an error loading patient data
+                    Toast.makeText(ManageUsersActivity.this, "Error loading patients: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            List<Patient> patientList = new ArrayList<>();
-            for (QueryDocumentSnapshot doc : value) {
-                // Convert Firestore document to Patient object
-                Patient patient = doc.toObject(Patient.class);
-                patient.setId(doc.getId()); // Set the patient ID from the document ID
-                patientList.add(patient);
-            }
+                List<Patient> patientList = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : value) {
+                    // Convert Firestore document to Patient object
+                    Patient patient = doc.toObject(Patient.class);
+                    patient.setId(doc.getId()); // Set the patient ID from the document ID
+                    patientList.add(patient);
+                }
 
-            // Notify the RecyclerView Adapter with the updated list of patients
-            adapter.updatePatients(patientList);
+                // Notify the RecyclerView Adapter with the updated list of patients
+                adapter.updatePatients(patientList);
+            }
         });
     }
 }

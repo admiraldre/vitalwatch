@@ -48,7 +48,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Placeholder for future implementation of viewing reports
-                Toast.makeText(AdminDashboardActivity.this, "View Reports clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminDashboardActivity.this, EmergencyReportsActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <!-- TextView to show the type of activity (Running, Cycling, etc.) -->
+    <TextView
+        android:id="@+id/activityTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activity Type"
+        android:textSize="16sp" />
+
+    <!-- TextView to show the duration of the activity -->
+    <TextView
+        android:id="@+id/activityDurationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration: 0 min"
+        android:textSize="14sp" />
+
+    <!-- TextView to show the date of the activity -->
+    <TextView
+        android:id="@+id/activityDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: 2024-11-25"
+        android:textSize="14sp" />
+</LinearLayout>

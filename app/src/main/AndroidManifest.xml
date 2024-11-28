@@ -47,6 +47,8 @@
         <activity android:name=".ManageUsersActivity" />
         <activity android:name=".PatientDetailsActivity" />
         <activity android:name=".PatientHealthInfoActivity" />
+        <activity android:name=".ActivitySummaryActivity" />
+        <activity android:name=".EmergencyReportsActivity" />
     </application>
 
 </manifest>
