@@ -14,16 +14,29 @@ import com.example.vw.R;
 
 import java.util.Calendar;
 
+/**
+ * A decorator class for adding alarm-related functionality to the base feature.
+ */
 public class AlarmsFeature extends FeatureDecorator {
     private final Context context;
     private Calendar alarmTime;
 
+    /**
+     * Constructs an AlarmsFeature decorator.
+     *
+     * @param homeFeature The base feature to decorate.
+     * @param alarmTime   The time for the alarm.
+     * @param context     The context used for UI and system services.
+     */
     public AlarmsFeature(Feature homeFeature, Calendar alarmTime, Context context) {
         super(homeFeature);
         this.context = context;
         this.alarmTime = alarmTime;
     }
 
+    /**
+     * Displays the feature by adding alarm details to the UI and setting up the actual alarm.
+     */
     @Override
     public void displayFeature() {
         super.displayFeature();
@@ -45,6 +58,9 @@ public class AlarmsFeature extends FeatureDecorator {
         }
     }
 
+    /**
+     * Sets up the system alarm using AlarmManager.
+     */
     private void setupAlarm() {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -57,7 +73,11 @@ public class AlarmsFeature extends FeatureDecorator {
         }
     }
 
-
+    /**
+     * Updates the alarm time.
+     *
+     * @param alarmTime The new alarm time to set.
+     */
     public void setAlarmTime(Calendar alarmTime) {
         this.alarmTime = alarmTime;
     }

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity for capturing and saving the user's fitness information.
+ */
 public class FitnessInfoActivity extends AppCompatActivity {
 
     private EditText nameField, ageField, weightField, heightField;
@@ -38,20 +42,41 @@ public class FitnessInfoActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("USER_ID");
 
         // Initialize UI components
+        initializeUI();
+
+        // Set up the gender spinner
+        setupGenderSpinner();
+
+        // Configure the save button
+        configureSaveButton();
+    }
+
+    /**
+     * Initializes the UI components.
+     */
+    private void initializeUI() {
         nameField = findViewById(R.id.nameField);
         ageField = findViewById(R.id.ageField);
         weightField = findViewById(R.id.weightField);
         heightField = findViewById(R.id.heightField);
         genderSpinner = findViewById(R.id.genderSpinner);
-        Button saveButton = findViewById(R.id.saveButton);
+    }
 
-        // Set up the gender spinner
+    /**
+     * Sets up the gender spinner with predefined options.
+     */
+    private void setupGenderSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
+    }
 
-        // Save button action
+    /**
+     * Configures the save button to save the user's fitness information.
+     */
+    private void configureSaveButton() {
+        Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +85,9 @@ public class FitnessInfoActivity extends AppCompatActivity {
         });
     }
 
-    // Save the user's fitness information to Firestore
+    /**
+     * Saves the user's fitness information to Firestore.
+     */
     private void saveFitnessInfo() {
         String name = nameField.getText().toString().trim();
         String age = ageField.getText().toString().trim();
@@ -89,14 +116,20 @@ public class FitnessInfoActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(FitnessInfoActivity.this, "Fitness info saved successfully!", Toast.LENGTH_SHORT).show();
-                    // Navigate to HomeActivity
-                    Intent intent = new Intent(FitnessInfoActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();  // Close FitnessInfoActivity
+                    navigateToHomeActivity();
                 } else {
                     Toast.makeText(FitnessInfoActivity.this, "Error saving fitness info", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    /**
+     * Navigates to the HomeActivity after saving the fitness information.
+     */
+    private void navigateToHomeActivity() {
+        Intent intent = new Intent(FitnessInfoActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish(); // Close FitnessInfoActivity
     }
 }

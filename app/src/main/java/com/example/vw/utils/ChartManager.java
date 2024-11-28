@@ -14,14 +14,29 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for managing and updating charts in the application.
+ */
 public class ChartManager {
 
     private final Context context;
 
+    /**
+     * Constructor to initialize the ChartManager with a context.
+     *
+     * @param context the application context
+     */
     public ChartManager(Context context) {
         this.context = context;
     }
 
+    /**
+     * Updates a PieChart with the steps data.
+     *
+     * @param pieChart the PieChart to update
+     * @param steps    the number of steps taken
+     * @param goal     the goal for the steps
+     */
     public void updateStepsPieChart(PieChart pieChart, int steps, int goal) {
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(steps, "Steps Taken"));
@@ -35,6 +50,12 @@ public class ChartManager {
         pieChart.invalidate(); // Refresh the chart
     }
 
+    /**
+     * Updates a LineChart with heart rate data.
+     *
+     * @param lineChart       the LineChart to update
+     * @param heartRateEntries the list of heart rate entries
+     */
     public void updateHeartRateLineChart(LineChart lineChart, List<Entry> heartRateEntries) {
         LineDataSet dataSet = new LineDataSet(heartRateEntries, "Heart Rate");
         dataSet.setColor(android.graphics.Color.RED);

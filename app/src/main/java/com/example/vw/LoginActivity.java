@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * LoginActivity manages user authentication. It allows users to log in, sign up, or navigate
+ * to the admin login interface. On successful login, the user is redirected to the HomeActivity.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailField, passwordField;
@@ -47,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Set up the Sign Up button click listener
+        // Set up the Sign-Up button click listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handles the login process by authenticating the user with Firebase.
+     *
+     * @param email    The user's email address.
+     * @param password The user's password.
+     */
     private void login(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {

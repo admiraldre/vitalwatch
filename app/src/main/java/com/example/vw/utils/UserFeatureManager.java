@@ -12,17 +12,31 @@ import com.example.vw.decorators.RemindersFeature;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Manages user-specific features such as alarms and reminders.
+ */
 public class UserFeatureManager {
 
     private final Context context;
     private Feature homeFeature;
 
+    /**
+     * Constructor to initialize the UserFeatureManager.
+     *
+     * @param context the application context
+     */
     public UserFeatureManager(Context context) {
         this.context = context;
         this.homeFeature = new BaseFeature(context);
     }
 
+    /**
+     * Loads user settings such as alarms and reminders from an intent.
+     *
+     * @param intent the intent containing user settings
+     */
     public void loadUserSettings(Intent intent) {
+        // Load alarms from the intent
         ArrayList<Calendar> alarmTimes = (ArrayList<Calendar>) intent.getSerializableExtra("alarmTimes");
         if (alarmTimes != null) {
             for (Calendar alarmTime : alarmTimes) {
@@ -30,6 +44,7 @@ public class UserFeatureManager {
             }
         }
 
+        // Load reminders from the intent
         ArrayList<String> reminders = intent.getStringArrayListExtra("reminders");
         if (reminders != null && !reminders.isEmpty()) {
             RemindersFeature reminderFeature = new RemindersFeature(homeFeature, context);
@@ -40,8 +55,13 @@ public class UserFeatureManager {
         }
     }
 
+    /**
+     * Displays user features (e.g., alarms and reminders) in the provided UI container.
+     *
+     * @param additionalFeaturesContainer the container to display the features
+     */
     public void displayFeatures(LinearLayout additionalFeaturesContainer) {
         homeFeature.displayFeature();
-        // Optionally, add logic to display features in the UI
+        // Optionally, add logic to customize UI representation for features
     }
 }
