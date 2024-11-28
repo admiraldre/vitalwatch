@@ -1,64 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/purple_200">
 
-    <!-- Header TextView for Fitness Information -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fitness_information"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:paddingBottom="16dp" />
-
-    <!-- Name Field Input -->
-    <EditText
-        android:id="@+id/nameField"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_name"
-        android:inputType="textPersonName" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/purple_200"
+        android:layout_centerInParent="true"
+        android:gravity="center">
 
-    <!-- Age Field Input -->
-    <EditText
-        android:id="@+id/ageField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_age"
-        android:inputType="number" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fitness_information"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:textColor="#2C3E50" />
 
-    <!-- Weight Field Input -->
-    <EditText
-        android:id="@+id/weightField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_weight_kg"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_name"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/black"/>
 
-    <!-- Height Field Input -->
-    <EditText
-        android:id="@+id/heightField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_height_cm"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/ageField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_age"
+            android:inputType="number"
+            android:textColor="@android:color/black" />
 
-    <!-- Gender Dropdown Spinner -->
-    <Spinner
-        android:id="@+id/genderSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/weightField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_weight_kg"
+            android:inputType="numberDecimal"
+            android:textColor="@android:color/black" />
 
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:backgroundTint="@color/purple_500"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/heightField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_height_cm"
+            android:inputType="numberDecimal"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/genderSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:backgroundTint="@color/purple_700"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</RelativeLayout>

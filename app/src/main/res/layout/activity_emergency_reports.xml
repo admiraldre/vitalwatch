@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/teal_200">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/emergencyLogRecyclerView"
@@ -12,6 +13,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:divider="@android:drawable/divider_horizontal_bright"
+        android:dividerHeight="1dp"
+        android:padding="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

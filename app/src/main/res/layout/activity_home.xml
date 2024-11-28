@@ -9,18 +9,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/teal_200"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to VitalWatch Home!"
+            android:text="Activity Summary"
             android:textSize="24sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:paddingBottom="24dp" />
+            android:paddingBottom="24dp"
+            android:textColor="#2C3E50"/>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/stepsPieChart"
@@ -34,7 +35,8 @@
             android:text="Steps: --"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="#2C3E50" />
 
         <TextView
             android:id="@+id/heartRateTextView"
@@ -43,7 +45,8 @@
             android:text="Heart Rate: -- bpm"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="#2C3E50" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/heartRateLineChart"
@@ -55,8 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
-        </LinearLayout>
+            android:padding="8dp"/>
 
         <Button
             android:id="@+id/settingsButton"
@@ -64,8 +66,9 @@
             android:layout_height="wrap_content"
             android:text="Settings"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp" />
-
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"/>
 
         <Button
             android:id="@+id/signOutButton"
@@ -73,7 +76,9 @@
             android:layout_height="wrap_content"
             android:text="Sign Out"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 </ScrollView>
