@@ -21,11 +21,6 @@ The **Heart Rate Monitor App** is an Android application developed in **Android 
 - **Firestore Database** for storing and retrieving patient data and reports.
 - **RecyclerView** for dynamic and efficient display of patient logs and reports.
 
-## Future Enhancements
-- Advanced analytics for heart rate trends.
-- Integration with wearable devices.
-- Notifications for emergency situations.
-
 ## Installation
 1. Clone the repository:
    ```bash
