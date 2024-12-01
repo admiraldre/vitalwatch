@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#A5D6A7</color> <!-- Soft pastel green for highlights -->
+    <color name="purple_500">#81C784</color> <!-- Muted green for main action buttons -->
+    <color name="purple_700">#388E3C</color> <!-- Deep green for accents -->
+    <color name="teal_200">#FFF9C4</color> <!-- Light cream/yellow for background -->
+    <color name="teal_700">#BCAAA4</color> <!-- Subtle light brown for professional tones -->
+    <color name="black">#212121</color> <!-- Dark gray for text and contrast -->
+    <color name="white">#FFFFFF</color> <!-- Classic white for minimalist design -->
+</resources>

@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "730998789736",
+    "project_id": "vitalwatch-app",
+    "storage_bucket": "vitalwatch-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730998789736:android:272995ae01c93df0ce4ddd",
+        "android_client_info": {
+          "package_name": "com.example.vw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37021169792-em2a7f67v940906cdccp055psbderkif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vw",
+            "certificate_hash": "83997409A1BB1256E705B2128C26A4B6B0AE640F"
+          }
+        },
+        {
+          "client_id": "37021169792-em2a7f67v940906cdccp055psbderkif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vw",
+            "certificate_hash": "4A5B7A4A6A1B80FEDC0C96595142E5A3998BC3EE"
+          }
+        },
+        {
+          "client_id": "37021169792-120av6puonhfjgm8brlh27a6qdhd6p3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHTewjAHYk1ej7K3GsTTQZ444lRp-7-YA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
