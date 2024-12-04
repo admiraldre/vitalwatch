@@ -25,3 +25,6 @@ The **Heart Rate Monitor App** is an Android application developed in **Android 
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-repo/heart-rate-monitor.git
+
+## Demo Video
+[Click for the Demo Video](https://youtu.be/ayDxfdFUevM)
